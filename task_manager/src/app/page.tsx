@@ -1,8 +1,10 @@
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      Next js
+    <div className="">
+      <Link href="/signin" className="flex justify-end-safe m-2 text-blue-500">signin</Link>
+      <h1 className="text-xl font-bold">Task Manager</h1>
     </div>
   );
 }
