@@ -1,12 +1,22 @@
-import db from "@/app/utils/db";
-import { NextResponse } from "next/server";
+import { authClient } from "@/lib/auth-client";
 
-export async function POST() {
-  const text = "Sample todo from API";
-  const result = await db.query(
-    `INSERT INTO todo (text) VALUES ($1) RETURNING *`,
-    [text]
-  );
+export async function POST(req: Request) {
+  const { email, password } = await req.json();
 
-  return NextResponse.json(result.rows[0]);
+  const result = await authClient.signIn.email({
+    email,
+    password,
+  });
+
+  if (!result.data) {
+    return Response.json(
+      { error: result.error?.message || "Invalid credentials" },
+      { status: 401 }
+    );
+  }
+
+  return Response.json({
+    user: result.data.user,
+    token: result.data?.token, // or .accessToken depending on config
+  });
 }
